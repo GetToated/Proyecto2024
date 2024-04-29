@@ -3,9 +3,10 @@ package Proyecto2024.Ahorcado;
 public class Puntuacion {
     private int mostrarPuntuacionInicio;
     private int MostrarPuntuacionFinal;
+
     public  Puntuacion(int mostrarPuntuacionInicio, int mostrarPuntuacionFinal ) {
 
-        this.mostrarPuntuacionInicio = mostrarPuntuacionInicio;
+        this.mostrarPuntuacionInicio = 0;
         this.MostrarPuntuacionFinal = mostrarPuntuacionFinal;
     }
     public int getMostrarPuntuacionInicio() {
@@ -19,6 +20,12 @@ public class Puntuacion {
     }
     public void setMostrarPuntuacionFinal(int mostrarPuntuacionFinal) {
         this.MostrarPuntuacionFinal = mostrarPuntuacionFinal;
+    }
+    public void calcularPuntuacionTotal() {
+
+    }
+    public void actualizarPuntuacion() {
+
     }
 
 }

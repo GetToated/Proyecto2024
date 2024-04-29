@@ -22,7 +22,23 @@ public class PalabraEscondida {
             }
         System.out.println("La palabra oculta era: " + palabraAMostrar);
         }
-
+    public String obtenerPalabraOculta() {
+        return mostrarPalabra;
+    }
+    public boolean letrasAdivinadas() {
+        return !mostrarPalabra.contains("_");
+    }
+    public boolean adivinaLetra(char letra) {
+        boolean letraEncontrada = false;
+        for (int i = 0; i < palabra.length(); i++) {
+            if (palabra.charAt(i) == letra) {
+                mostrarPalabra = mostrarPalabra.substring(0, i) + letra + mostrarPalabra.substring(i + 1);
+                letraEncontrada = true;
+            }
+        }
+        verificarLetra = letraEncontrada;
+        return letraEncontrada;
+    }
     public boolean verificarLetra(char letra) {
         boolean letraEncontrada = false;
         for (int i = 0; i < palabra.length(); i ++) {

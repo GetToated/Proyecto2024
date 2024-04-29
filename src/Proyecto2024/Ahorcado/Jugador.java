@@ -7,7 +7,6 @@ public class Jugador {
     private int puntuacion;
 
     public Jugador (String nombre, int edad, int intentosRealizados, int puntuacion) {
-
         this.nombre = nombre;
         this.edad = edad;
         this.intentosRealizados = intentosRealizados;
@@ -33,9 +32,6 @@ public class Jugador {
     }
     public int getPuntuacion() {
         return puntuacion;
-    }
-    public void setPuntuacion(int puntuacion) {
-        return;
     }
 
 }
