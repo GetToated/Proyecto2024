@@ -48,7 +48,6 @@ public class AhorcadoPrincipal {
 
             imprimirInstrucciones();
             String modoASeleccionar = seleccionDeModoDeJuego();
-            ModosDeJuego modosDeJuego = new ModosDeJuego("Clásico", "Cronometrado", 10, 7);
             if (modoASeleccionar.equalsIgnoreCase("1")) {
                 System.out.println("Has seleccionado el modo Clasico.");
                 juegoClasico();
