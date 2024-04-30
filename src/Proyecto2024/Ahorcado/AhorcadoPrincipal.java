@@ -45,6 +45,7 @@ public class AhorcadoPrincipal {
         Thread thread = new Thread(() -> {
             while (tiempoRestante > 0) {
                 System.out.print("\rTiempo Restante: " + tiempoRestante + " segundos   ");
+                System.out.println("Palabra: " + palabraEscondida.obtenerPalabraOculta());
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -55,7 +56,7 @@ public class AhorcadoPrincipal {
         });
         thread.start();
         System.out.print("Palabra: " + palabraEscondida.obtenerPalabraOculta());
-        while (intentosRestantes > 0 && !palabraEscondida.letrasAdivinadas() && tiempoRestante > 0) {
+        while (intentosRestantes > 0 && tiempoRestante > 0 && palabraEscondida.letrasAdivinadas() ) {
             char letra = pedirLetra();
             if (palabraEscondida.adivinaLetra(letra)) {
                 System.out.println("\nLa letra " + letra + " está en la palabra.");
@@ -64,13 +65,12 @@ public class AhorcadoPrincipal {
             }
             intentosRestantes--;
         }
+
         deterTemporizador();
         if (palabraEscondida.letrasAdivinadas()) {
             System.out.println("Ganaste");
-        } else if (tiempoRestante <= 0) {
-            System.out.println("\nSe acabó el tiempo, la palabra era " + palabraOculta);
         } else {
-            System.out.println("\nPerdiste, la palabra era " + palabraOculta);
+            System.out.println("\nSe acabó el tiempo, la palabra era " + palabraOculta);
         }
     }
 
