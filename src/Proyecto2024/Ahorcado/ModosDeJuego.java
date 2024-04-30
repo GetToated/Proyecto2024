@@ -35,10 +35,10 @@ public class ModosDeJuego {
         return intentosCrono;
     }
     public void instuccionesClasico() {
-        System.out.println("-Tendrás un total de " + intentosClasico + " intentos.\n-Deberas escribir una letra, en el caso que no aciertes se insertará como fallada y no se podra repetir, si aciertas se colocará como acertada.\n-Pasarlo bien");
+        System.out.println("-Tendrás un total de " + intentosClasico + " intentos.\n-Deberas escribir una letra, en el caso que no aciertes se insertará como fallada y no se podra repetir, si aciertas se colocará como acertada.\n-Pasarlo bien\n");
     }
     public void instruccionesCrono() {
-        System.out.println("-Tendras " + intentosCrono + " intentos, lo cual son más.\n-Tendras segundos para adivinar la palabra.\n-Deberas escribir una letra, en el caso que no aciertes se insertará como fallada y no se podra repetir, si aciertas se colocará como acertada.\n-Pasarlo bien\n" );
+        System.out.println("-Tendras segundos para adivinar la palabra.\n-NO veras la longitud de la palabra, lo cual se dificulta.\n-Deberas escribir una letra, en el caso que no aciertes se insertará como fallada y no se podra repetir, si aciertas se colocará como acertada.\n-Pasarlo bien\n" );
     }
     public String eleccionModo() {
         Scanner scanner = new Scanner(System.in);

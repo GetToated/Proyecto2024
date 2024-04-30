@@ -34,8 +34,11 @@ public class AhorcadoPrincipal {
         }
         if (palabraEscondida.letrasAdivinadas()) {
             System.out.println("Ganaste! " + palabraOculta + " era la palabra.");
-        } else
+        } else if (tiempoRestante <= 0) {
             System.out.println("perdiste la palabra era " + palabraOculta);
+        } else {
+            System.out.println("lost");
+        }
     }
     public void juegoCrono() {
         String palabraOculta = palabraRandom();
@@ -45,7 +48,6 @@ public class AhorcadoPrincipal {
         Thread thread = new Thread(() -> {
             while (tiempoRestante > 0) {
                 System.out.print("\rTiempo Restante: " + tiempoRestante + " segundos   ");
-                System.out.println("Palabra: " + palabraEscondida.obtenerPalabraOculta());
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -55,8 +57,7 @@ public class AhorcadoPrincipal {
             }
         });
         thread.start();
-        System.out.print("Palabra: " + palabraEscondida.obtenerPalabraOculta());
-        while (intentosRestantes > 0 && tiempoRestante > 0 && palabraEscondida.letrasAdivinadas() ) {
+        while (intentosRestantes > 0 && tiempoRestante > 0 && !palabraEscondida.letrasAdivinadas()) {
             char letra = pedirLetra();
             if (palabraEscondida.adivinaLetra(letra)) {
                 System.out.println("\nLa letra " + letra + " está en la palabra.");
@@ -65,12 +66,12 @@ public class AhorcadoPrincipal {
             }
             intentosRestantes--;
         }
-
         deterTemporizador();
+
         if (palabraEscondida.letrasAdivinadas()) {
-            System.out.println("Ganaste");
+            System.out.println("Ganaste!, la palabra es: " + palabraOculta);
         } else {
-            System.out.println("\nSe acabó el tiempo, la palabra era " + palabraOculta);
+            System.out.println("Se acabó el tiempo, la palabra era " + palabraOculta);
         }
     }
 
@@ -149,7 +150,7 @@ public class AhorcadoPrincipal {
         return scanner.next().charAt(0);
     }
     private String palabraRandom() {
-        String[] lista = {"Leon", "Java", "Programacion", "Logica", "Esternocleidomastoiedo"};
+        String[] lista = {"leon", "java", "programacion", "logica", "esternocleidomastoiedo", "mar"};
         Random random = new Random();
         int indice = random.nextInt(lista.length);
         return lista[indice];
