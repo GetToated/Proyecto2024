@@ -8,6 +8,7 @@ public class ModosDeJuego {
     private int intentosCrono;
     private int intentosClasico;
 
+
     public ModosDeJuego(String modoClasico, String modoCrono, int intentosCrono, int intentosClasico) {
         this.modoClasico = modoClasico;
         this.modoCrono = modoCrono;

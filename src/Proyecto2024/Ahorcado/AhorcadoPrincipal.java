@@ -4,10 +4,13 @@ public class AhorcadoPrincipal {
     Scanner scanner = new Scanner(System.in);
     private int intentos;
     private boolean victoriaODerrota;
+    private Timer time;
+    private int tiempoRestante;
+    private int tiempoLimite;
 
-    public AhorcadoPrincipal(int intentos) {
+    public AhorcadoPrincipal(int intentos, int tiempoLimite) {
         this.intentos = intentos;
-        this.victoriaODerrota = false;
+        this.tiempoLimite = tiempoLimite;
     }
     public int getIntentos() {
         return intentos;
@@ -30,9 +33,62 @@ public class AhorcadoPrincipal {
                 intentosRestantes--;
         }
         if (palabraEscondida.letrasAdivinadas()) {
-            System.out.println("Ganaste");
+            System.out.println("Ganaste! " + palabraOculta + " era la palabra.");
         } else
             System.out.println("perdiste la palabra era " + palabraOculta);
+    }
+    public void juegoCrono() {
+        String palabraOculta = palabraRandom();
+        int intentosRestantes = getIntentos();
+        iniciarTemporizador();
+        PalabraEscondida palabraEscondida = new PalabraEscondida(palabraOculta, "_".repeat(palabraOculta.length()), false);
+        Thread thread = new Thread(() -> {
+            while (tiempoRestante > 0) {
+                System.out.print("\rTiempo Restante: " + tiempoRestante + " segundos   ");
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                tiempoRestante--;
+            }
+        });
+        thread.start();
+        System.out.print("Palabra: " + palabraEscondida.obtenerPalabraOculta());
+        while (intentosRestantes > 0 && !palabraEscondida.letrasAdivinadas() && tiempoRestante > 0) {
+            char letra = pedirLetra();
+            if (palabraEscondida.adivinaLetra(letra)) {
+                System.out.println("\nLa letra " + letra + " está en la palabra.");
+            } else {
+                System.out.println("\nLa letra " + letra + " NO está en la palabra");
+            }
+            intentosRestantes--;
+        }
+        deterTemporizador();
+        if (palabraEscondida.letrasAdivinadas()) {
+            System.out.println("Ganaste");
+        } else if (tiempoRestante <= 0) {
+            System.out.println("\nSe acabó el tiempo, la palabra era " + palabraOculta);
+        } else {
+            System.out.println("\nPerdiste, la palabra era " + palabraOculta);
+        }
+    }
+
+    public void iniciarTemporizador() {
+        tiempoRestante = tiempoLimite;
+        time = new Timer();
+        time.scheduleAtFixedRate(new TimerTask() {
+
+            public void run() {
+                tiempoRestante--;
+                if (tiempoRestante == 0) {
+                    time.cancel();
+                }
+            }
+        }, 1000, 1000);
+    }
+    public void deterTemporizador() {
+        time.cancel();
     }
     public void comienzoDelJuego() {
         try {
@@ -53,6 +109,7 @@ public class AhorcadoPrincipal {
                 juegoClasico();
             } else if (modoASeleccionar.equalsIgnoreCase("2")) {
                 System.out.println("Has seleccionado el modo Cronometrado");
+                juegoCrono();
             } else
                 System.out.println("Opcion no valida, introduzca un numero dicho anteriormente.");
 
