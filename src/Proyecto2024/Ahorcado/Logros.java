@@ -5,7 +5,7 @@ public class Logros {
     private boolean verificarLogro;
     private int progresoLogro;
 
-    public Logros( String logroNombre, boolean verificarLogro) {
+    public Logros(String logroNombre, boolean verificarLogro) {
 
         this.verificarLogro = verificarLogro;
         this.logroNombre = logroNombre;
@@ -19,6 +19,7 @@ public class Logros {
         return verificarLogro;
     }
 
+
     public void capProgreso(int cantidadPuntos) {
         progresoLogro += cantidadPuntos;
         if (progresoLogro >= 100) {
@@ -29,4 +30,5 @@ public class Logros {
         progresoLogro = 0;
         verificarLogro = false;
     }
+
 }

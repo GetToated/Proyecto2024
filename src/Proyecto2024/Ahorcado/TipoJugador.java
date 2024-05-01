@@ -8,12 +8,6 @@ public class TipoJugador extends Jugador {
         this.esBuenJugador = esBuenJugador;
 
     }
-    public boolean getEsBuenJugador() {
-        return esBuenJugador;
-    }
-    public void setEsBuenJugador(boolean esBuenJugador) {
-        this.esBuenJugador = esBuenJugador;
-    }
     public String[] listas() {
         if (esBuenJugador) {
             return new String[] {"esternocleidomastoideo", "articulacion", "asteroide", "flexionar", "campamento", "dinosaurio"};

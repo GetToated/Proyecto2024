@@ -3,50 +3,95 @@ import java.util.*;
 public class AhorcadoPrincipal {
     Scanner scanner = new Scanner(System.in);
     private int intentos;
-    private boolean victoriaODerrota;
     private Timer time;
     private int tiempoRestante;
     private int tiempoLimite;
-
+    private int intentosUsados;
+    private boolean palabraAdivinada;
+    private Puntuacion puntuacion;
+    private Jugador jugador;
+    private TipoJugador tipJugador;
     public AhorcadoPrincipal(int intentos, int tiempoLimite) {
         this.intentos = intentos;
         this.tiempoLimite = tiempoLimite;
+        this.puntuacion = new Puntuacion(0, 0);
+        this.jugador = null;
     }
+    public void reiniciarLogros() {
+        logroIntentos.reiniciarLogro();
+        logro2.reiniciarLogro();
+    }
+
+    Logros logro1 = new Logros("Ganado por primera vez.", false);
+    Logros logroIntentos = new Logros("Hecho en la mitad de intentos", false);
+    Logros logro2 = new Logros("Cronometro antes de tiempo.", false);
     public int getIntentos() {
         return intentos;
     }
     public void setIntentos(int intentos) {
         this.intentos = intentos;
     }
-    public void juegoClasico() {
-        String palabraOculta = palabraRandom();
+    public void juegoClasico(TipoJugador jugador) {
+        String palabraOculta = listaSegunJugador(jugador);
         int intentosRestantes = getIntentos();
+        intentosUsados = 0;
         PalabraEscondida palabraEscondida = new PalabraEscondida(palabraOculta, "_".repeat(palabraOculta.length()), false);
         while (intentosRestantes > 0 && !palabraEscondida.letrasAdivinadas()) {
             System.out.print("Intentos Restantes: " + intentosRestantes + "\n");
-            System.out.print("Palabra: " +  palabraEscondida.obtenerPalabraOculta() + "\n");
+            System.out.print("Palabra: " + palabraEscondida.obtenerPalabraOculta() + "\n");
             char letra = pedirLetra();
+
             if (palabraEscondida.adivinaLetra(letra)) {
-                System.out.println("La letra " + letra  + " esta en la palabra");
-            } else
-                System.out.println("La letra " + letra + "  NO esta en la palabra");
+                System.out.println("La letra " + letra + " está en la palabra");
+            } else {
+                System.out.println("La letra " + letra + " NO está en la palabra");
                 intentosRestantes--;
+                intentosUsados++;
+            }
         }
         if (palabraEscondida.letrasAdivinadas()) {
-            System.out.println("Ganaste! " + palabraOculta + " era la palabra.");
-        } else if (tiempoRestante <= 0) {
-            System.out.println("perdiste la palabra era " + palabraOculta);
+            System.out.println("¡Ganaste! " + palabraOculta + " era la palabra.");
+
+            int puntosGanados = calcularPuntuacion(intentosUsados);
+            puntuacion.actualizarPuntuacion(puntuacion.getMostrarPuntuacionFinal() + puntosGanados);
+            jugador.setPuntuacion(jugador.getPuntuacion() + puntuacion.getMostrarPuntuacionFinal());
+            jugador.setIntentosRealizados(jugador.getIntentosRealizados() + getIntentos() - intentosRestantes);
+            System.out.println("Puntuacion final: " + jugador.getPuntuacion());
+            System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
+            logro1.capProgreso(100);
+            if (logro1.getVerificarLogro()) {
+                System.out.println("Felicidades! desbloqueaste el logro: " + logro1.getLogroNombre());
+            }
+            if (intentosUsados <= getIntentos() / 2) {
+                logroIntentos.capProgreso(100);
+                if (logroIntentos.getVerificarLogro()) {
+                    System.out.println("Felicidades! desbloqueaste el logro: " + logroIntentos.getLogroNombre());
+                }
+            }
         } else {
-            System.out.println("lost");
+            System.out.println("Perdiste, la palabra era: " + palabraOculta);
+        }
+        jugador.setPuntuacion(jugador.getPuntuacion() + puntuacion.getMostrarPuntuacionFinal());
+        seguirJugando();
+    }
+    private int calcularPuntuacion(int intentosUsados) {
+        if (intentosUsados <= intentos / 4) {
+            return 50;
+        } else if (intentosUsados <= intentos / 2) {
+            return 30;
+        } else {
+            return 10;
         }
     }
-    public void juegoCrono() {
-        String palabraOculta = palabraRandom();
+
+    public void juegoCrono(TipoJugador jugador) {
+        String palabraOculta = listaSegunJugador(jugador);
         int intentosRestantes = getIntentos();
         iniciarTemporizador();
         PalabraEscondida palabraEscondida = new PalabraEscondida(palabraOculta, "_".repeat(palabraOculta.length()), false);
+
         Thread thread = new Thread(() -> {
-            while (tiempoRestante > 0) {
+            while (tiempoRestante > 0 && !palabraAdivinada) {
                 System.out.print("\rTiempo Restante: " + tiempoRestante + " segundos   ");
                 try {
                     Thread.sleep(1000);
@@ -55,9 +100,14 @@ public class AhorcadoPrincipal {
                 }
                 tiempoRestante--;
             }
+            deterTemporizador();
+            if (!palabraEscondida.letrasAdivinadas() && !palabraAdivinada) {
+                System.out.println("\nSe acabó el tiempo, la palabra era " + palabraOculta);
+                seguirJugando();
+            }
         });
         thread.start();
-        while (intentosRestantes > 0 && tiempoRestante > 0 && !palabraEscondida.letrasAdivinadas()) {
+        while (intentosRestantes > 0 && !palabraEscondida.letrasAdivinadas()) {
             char letra = pedirLetra();
             if (palabraEscondida.adivinaLetra(letra)) {
                 System.out.println("\nLa letra " + letra + " está en la palabra.");
@@ -66,15 +116,32 @@ public class AhorcadoPrincipal {
             }
             intentosRestantes--;
         }
-        deterTemporizador();
-
         if (palabraEscondida.letrasAdivinadas()) {
+            palabraAdivinada = true;
             System.out.println("Ganaste!, la palabra es: " + palabraOculta);
-        } else {
-            System.out.println("Se acabó el tiempo, la palabra era " + palabraOculta);
+            int puntosGanados = calcularPuntuacion(intentosUsados);
+            puntuacion.actualizarPuntuacion(puntuacion.getMostrarPuntuacionFinal() + puntosGanados);
+            jugador.setPuntuacion(jugador.getPuntuacion() + puntuacion.getMostrarPuntuacionFinal());
+            jugador.setIntentosRealizados(jugador.getIntentosRealizados() + getIntentos() - intentosRestantes);
+            System.out.println("Puntuacion final: " + jugador.getPuntuacion());
+            System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
+            System.out.println("Aquí están los puntos que ganaste: " + puntuacion.getMostrarPuntuacionFinal());
+            logro1.capProgreso(100);
+            if (logro1.getVerificarLogro()) {
+                System.out.println("Felicidades has ganado el Logro: " + logro1.getLogroNombre());
+            }
+            seguirJugandoCrono();
         }
     }
 
+
+
+    private String listaSegunJugador(TipoJugador jugador) {
+        String[] lista = jugador.listas();
+        Random random = new Random();
+        int indice = random.nextInt(lista.length);
+        return lista[indice];
+    }
     public void iniciarTemporizador() {
         tiempoRestante = tiempoLimite;
         time = new Timer();
@@ -88,49 +155,80 @@ public class AhorcadoPrincipal {
             }
         }, 1000, 1000);
     }
+    public void seguirJugando() {
+        System.out.print("Quieres seguir jugando? SI[1] o NO[2]: ");
+        while (!scanner.hasNextInt()) {
+            System.out.println("Por favor, ingresa un número válido.");
+            scanner.next();
+        }
+        int opcion = scanner.nextInt();
+        if (opcion == 1) {
+            juegoClasico((TipoJugador) jugador);
+        } else if (opcion == 2) {
+            System.out.println("Puntuacion final: " + jugador.getPuntuacion());
+            System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
+            return;
+        } else {
+            System.out.println("Opción inválida. Saliendo del juego.");
+        }
+    }
+    public void seguirJugandoCrono() {
+        System.out.print("Quieres seguir jugando? SI[1] o NO[2]: ");
+        while (!scanner.hasNextInt()) {
+            System.out.println("Por favor, ingresa un número válido.");
+            scanner.next();
+        }
+        int opcion = scanner.nextInt();
+        if (opcion == 1) {
+            juegoCrono((TipoJugador) jugador);
+        } else if (opcion == 2) {
+            System.out.println("Puntuacion final: " + jugador.getPuntuacion());
+            System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
+            return;
+        } else {
+            System.out.println("Opción inválida. Saliendo del juego.");
+        }
+    }
     public void deterTemporizador() {
         time.cancel();
     }
     public void comienzoDelJuego() {
         try {
-            String nombreJugador = nombre();
-            int edadJugador = edad();
+            System.out.print("Introduza su nombre: ");
+            String nombreJugador = scanner.nextLine();
+            System.out.print("Introduza su edad: ");
+            int edadJugador = scanner.nextInt();
             if (!validacionEdad(edadJugador)) {
                 System.out.println("Edad no validad, usted es demasiado pequeño :(");
                 return;
             }
-            System.out.println("Gracias " + nombreJugador + " por participar!");
-            Logros logro1 = new Logros("Ganado por primera vez.", false);
-            Logros logro2 = new Logros("Cronometro antes de tiempo.", false);
+            System.out.println("te consideras buen jugador del ahorcado? SI[true] o NO[false]: ");
+            boolean esBuenJugador = scanner.nextBoolean();
+
+            jugador = new TipoJugador(nombreJugador, edadJugador, 0, 0, esBuenJugador);
+            System.out.println("Gracias " + jugador.getNombre() + " por participar!");
+
 
             imprimirInstrucciones();
             String modoASeleccionar = seleccionDeModoDeJuego();
             if (modoASeleccionar.equalsIgnoreCase("1")) {
                 System.out.println("Has seleccionado el modo Clasico.");
-                juegoClasico();
+                juegoClasico((TipoJugador) jugador);
             } else if (modoASeleccionar.equalsIgnoreCase("2")) {
                 System.out.println("Has seleccionado el modo Cronometrado");
-                juegoCrono();
-            } else
+                juegoCrono((TipoJugador) jugador);
+            } else {
                 System.out.println("Opcion no valida, introduzca un numero dicho anteriormente.");
-
-
+            }
+            reiniciarLogros();
         } catch (InputMismatchException exception) {
-            System.out.println("Error: eqeq");
-        } catch (NumberFormatException exception) {
-            System.out.println("e2qeqeq");
+            System.out.println("Error: Entrada No Valida");
         } catch (Exception exception) {
-            System.out.println("eqrqr" + exception.getMessage());
+            System.out.println("error: " + exception.getMessage());
         }
     }
-    private String nombre() {
-        System.out.print("Introduzca tu nombre: ");
-        return scanner.nextLine();
-    }
-    private int edad() {
-        System.out.print("Introduzca tu edad: ");
-        return scanner.nextInt();
-    }
+
+
     private boolean validacionEdad(int guardarEdad) {
         return guardarEdad >= 6 && guardarEdad <= 120;
     }
@@ -148,12 +246,6 @@ public class AhorcadoPrincipal {
     private char pedirLetra() {
         System.out.print("Introduce una letra: ");
         return scanner.next().charAt(0);
-    }
-    private String palabraRandom() {
-        String[] lista = {"leon", "java", "programacion", "logica", "esternocleidomastoiedo", "mar"};
-        Random random = new Random();
-        int indice = random.nextInt(lista.length);
-        return lista[indice];
     }
 
 

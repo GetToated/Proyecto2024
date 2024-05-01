@@ -2,30 +2,16 @@ package Proyecto2024.Ahorcado;
 
 public class Puntuacion {
     private int mostrarPuntuacionInicio;
-    private int MostrarPuntuacionFinal;
+    private int mostrarPuntuacionFinal;
 
-    public  Puntuacion(int mostrarPuntuacionInicio, int mostrarPuntuacionFinal ) {
-
-        this.mostrarPuntuacionInicio = 0;
-        this.MostrarPuntuacionFinal = mostrarPuntuacionFinal;
-    }
-    public int getMostrarPuntuacionInicio() {
-        return mostrarPuntuacionInicio;
-    }
-    public void setMostrarPuntuacionInicio(int mostrarPuntuacionInicio) {
+    public Puntuacion(int mostrarPuntuacionInicio, int mostrarPuntuacionFinal) {
         this.mostrarPuntuacionInicio = mostrarPuntuacionInicio;
+        this.mostrarPuntuacionFinal = mostrarPuntuacionFinal;
     }
     public int getMostrarPuntuacionFinal() {
-        return MostrarPuntuacionFinal;
+        return mostrarPuntuacionFinal;
     }
-    public void setMostrarPuntuacionFinal(int mostrarPuntuacionFinal) {
-        this.MostrarPuntuacionFinal = mostrarPuntuacionFinal;
+    public void actualizarPuntuacion(int nuevaPuntuacion) {
+        this.mostrarPuntuacionInicio += nuevaPuntuacion;
     }
-    public void calcularPuntuacionTotal() {
-
-    }
-    public void actualizarPuntuacion() {
-
-    }
-
 }
