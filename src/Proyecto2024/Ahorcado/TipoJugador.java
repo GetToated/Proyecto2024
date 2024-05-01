@@ -4,7 +4,7 @@ public class TipoJugador extends Jugador {
     private boolean esBuenJugador;
 
     public TipoJugador(String nombre, int edad, int intentosRealizados, int puntuacion, boolean esBuenJugador, int puntuacionTotal) {
-        super(nombre, edad, intentosRealizados, puntuacion, puntuacionTotal);
+        super(nombre, intentosRealizados, puntuacion, puntuacionTotal);
         this.esBuenJugador = esBuenJugador;
 
     }

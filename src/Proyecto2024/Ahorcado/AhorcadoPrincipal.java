@@ -31,10 +31,10 @@ public class AhorcadoPrincipal {
             System.out.print("Introduza su edad: ");
             int edadJugador = scanner.nextInt();
             if (!validacionEdad(edadJugador)) {
-                System.out.println("Edad no validad, usted es demasiado pequeño :(");
+                System.out.println("Edad no validad, usted es demasiado pequeño o la edad no es válida. :(");
                 return;
             }
-            System.out.println("te consideras buen jugador del ahorcado? SI[true] o NO[false]: ");
+            System.out.println("te consideras buen jugador del ahorcado?(para ajustar la dificultad)  SI[true] o NO[false]: ");
             boolean esBuenJugador = scanner.nextBoolean();
 
             jugador = new TipoJugador(nombreJugador, edadJugador, 0, 0, esBuenJugador, 0);
