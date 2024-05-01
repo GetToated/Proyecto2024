@@ -26,9 +26,5 @@ public class Logros {
             verificarLogro = true;
         }
     }
-    public void reiniciarLogro() {
-        progresoLogro = 0;
-        verificarLogro = false;
-    }
 
 }

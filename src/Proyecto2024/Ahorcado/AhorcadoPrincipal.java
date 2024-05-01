@@ -17,14 +17,10 @@ public class AhorcadoPrincipal {
         this.puntuacion = new Puntuacion(0, 0);
         this.jugador = null;
     }
-    public void reiniciarLogros() {
-        logroIntentos.reiniciarLogro();
-        logro2.reiniciarLogro();
-    }
 
-    Logros logro1 = new Logros("Ganado por primera vez.", false);
+
+    Logros logro1 = new Logros("Modo de Juego Ganado.", false);
     Logros logroIntentos = new Logros("Hecho en la mitad de intentos", false);
-    Logros logro2 = new Logros("Cronometro antes de tiempo.", false);
     public int getIntentos() {
         return intentos;
     }
@@ -54,9 +50,9 @@ public class AhorcadoPrincipal {
 
             int puntosGanados = calcularPuntuacion(intentosUsados);
             puntuacion.actualizarPuntuacion(puntuacion.getMostrarPuntuacionFinal() + puntosGanados);
-            jugador.setPuntuacion(jugador.getPuntuacion() +puntosGanados);
+            jugador.setPuntuacion(jugador.getPuntuacion() + puntosGanados);
             jugador.setIntentosRealizados(jugador.getIntentosRealizados() + getIntentos() - intentosRestantes);
-            System.out.println("Puntuacion final: " + jugador.getPuntuacion());
+            System.out.println("Puntuacion Total: " + jugador.getPuntuacion());
             System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
             logro1.capProgreso(100);
             if (logro1.getVerificarLogro()) {
@@ -71,7 +67,6 @@ public class AhorcadoPrincipal {
         } else {
             System.out.println("Perdiste, la palabra era: " + palabraOculta);
         }
-        jugador.setPuntuacion(jugador.getPuntuacion() + puntuacion.getMostrarPuntuacionFinal());
         seguirJugando();
     }
     private int calcularPuntuacion(int intentosUsados) {
@@ -161,10 +156,9 @@ public class AhorcadoPrincipal {
         if (opcion == 1) {
             juegoClasico((TipoJugador) jugador);
         } else if (opcion == 2) {
-            System.out.println("Puntuacion de esta ultima partida: " + jugador.getPuntuacion());
             System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
             int puntuacionActualizada = jugador.getPuntuacioTotal() + jugador.getPuntuacion();
-            System.out.println("Puntuacion Total: " + (jugador.getPuntuacioTotal() + jugador.getPuntuacion()));
+            System.out.println("Puntuacion Total: " + puntuacionActualizada);
             jugador.setPuntuacionTotal(puntuacionActualizada);
             return;
         } else {
@@ -181,7 +175,6 @@ public class AhorcadoPrincipal {
         if (opcion == 1) {
             juegoCrono((TipoJugador) jugador);
         } else if (opcion == 2) {
-            System.out.println("Puntuacion de esta ultima partida: " + jugador.getPuntuacion());
             System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
             int puntuacionActualizada = jugador.getPuntuacioTotal() + jugador.getPuntuacion();
             System.out.println("Puntuacion Total: " + (jugador.getPuntuacioTotal() + jugador.getPuntuacion()));
@@ -220,9 +213,9 @@ public class AhorcadoPrincipal {
                 System.out.println("Has seleccionado el modo Cronometrado");
                 juegoCrono((TipoJugador) jugador);
             } else {
-                System.out.println("Opcion no valida, introduzca un numero dicho anteriormente.");
+                System.out.println("Opcion no valida.");
             }
-            reiniciarLogros();
+
         } catch (InputMismatchException exception) {
             System.out.println("Error: Entrada No Valida");
         } catch (Exception exception) {
@@ -235,7 +228,7 @@ public class AhorcadoPrincipal {
         return guardarEdad >= 6 && guardarEdad <= 120;
     }
     private void imprimirInstrucciones() {
-        ModosDeJuego modosDeJuego = new ModosDeJuego("Clásico", "Cronometrado", 10, 7);
+        ModosDeJuego modosDeJuego = new ModosDeJuego("Clásico", "Cronometrado", 10);
         System.out.println("Aquí estan las instrucciones del modo " + modosDeJuego.getModoClasico() + ":\n");
         modosDeJuego.instuccionesClasico();
         System.out.println("Aquí estan las instrucciones del modo " + modosDeJuego.getModoCrono() + ":\n");
