@@ -10,7 +10,7 @@ public class AhorcadoPrincipal {
     private boolean palabraAdivinada;
     private Puntuacion puntuacion;
     private Jugador jugador;
-    private TipoJugador tipJugador;
+
     public AhorcadoPrincipal(int intentos, int tiempoLimite) {
         this.intentos = intentos;
         this.tiempoLimite = tiempoLimite;
@@ -54,7 +54,7 @@ public class AhorcadoPrincipal {
 
             int puntosGanados = calcularPuntuacion(intentosUsados);
             puntuacion.actualizarPuntuacion(puntuacion.getMostrarPuntuacionFinal() + puntosGanados);
-            jugador.setPuntuacion(jugador.getPuntuacion() + puntuacion.getMostrarPuntuacionFinal());
+            jugador.setPuntuacion(jugador.getPuntuacion() +puntosGanados);
             jugador.setIntentosRealizados(jugador.getIntentosRealizados() + getIntentos() - intentosRestantes);
             System.out.println("Puntuacion final: " + jugador.getPuntuacion());
             System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
@@ -86,7 +86,7 @@ public class AhorcadoPrincipal {
 
     public void juegoCrono(TipoJugador jugador) {
         String palabraOculta = listaSegunJugador(jugador);
-        int intentosRestantes = getIntentos();
+
         iniciarTemporizador();
         PalabraEscondida palabraEscondida = new PalabraEscondida(palabraOculta, "_".repeat(palabraOculta.length()), false);
 
@@ -103,29 +103,25 @@ public class AhorcadoPrincipal {
             deterTemporizador();
             if (!palabraEscondida.letrasAdivinadas() && !palabraAdivinada) {
                 System.out.println("\nSe acabó el tiempo, la palabra era " + palabraOculta);
-                seguirJugando();
+                seguirJugandoCrono();
             }
         });
         thread.start();
-        while (intentosRestantes > 0 && !palabraEscondida.letrasAdivinadas()) {
+        while (tiempoRestante > 0 && !palabraEscondida.letrasAdivinadas()) {
             char letra = pedirLetra();
             if (palabraEscondida.adivinaLetra(letra)) {
                 System.out.println("\nLa letra " + letra + " está en la palabra.");
             } else {
                 System.out.println("\nLa letra " + letra + " NO está en la palabra");
             }
-            intentosRestantes--;
         }
         if (palabraEscondida.letrasAdivinadas()) {
             palabraAdivinada = true;
             System.out.println("Ganaste!, la palabra es: " + palabraOculta);
             int puntosGanados = calcularPuntuacion(intentosUsados);
             puntuacion.actualizarPuntuacion(puntuacion.getMostrarPuntuacionFinal() + puntosGanados);
-            jugador.setPuntuacion(jugador.getPuntuacion() + puntuacion.getMostrarPuntuacionFinal());
-            jugador.setIntentosRealizados(jugador.getIntentosRealizados() + getIntentos() - intentosRestantes);
+            jugador.setPuntuacion(jugador.getPuntuacion() +puntosGanados);
             System.out.println("Puntuacion final: " + jugador.getPuntuacion());
-            System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
-            System.out.println("Aquí están los puntos que ganaste: " + puntuacion.getMostrarPuntuacionFinal());
             logro1.capProgreso(100);
             if (logro1.getVerificarLogro()) {
                 System.out.println("Felicidades has ganado el Logro: " + logro1.getLogroNombre());
@@ -165,8 +161,11 @@ public class AhorcadoPrincipal {
         if (opcion == 1) {
             juegoClasico((TipoJugador) jugador);
         } else if (opcion == 2) {
-            System.out.println("Puntuacion final: " + jugador.getPuntuacion());
+            System.out.println("Puntuacion de esta ultima partida: " + jugador.getPuntuacion());
             System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
+            int puntuacionActualizada = jugador.getPuntuacioTotal() + jugador.getPuntuacion();
+            System.out.println("Puntuacion Total: " + (jugador.getPuntuacioTotal() + jugador.getPuntuacion()));
+            jugador.setPuntuacionTotal(puntuacionActualizada);
             return;
         } else {
             System.out.println("Opción inválida. Saliendo del juego.");
@@ -182,8 +181,11 @@ public class AhorcadoPrincipal {
         if (opcion == 1) {
             juegoCrono((TipoJugador) jugador);
         } else if (opcion == 2) {
-            System.out.println("Puntuacion final: " + jugador.getPuntuacion());
+            System.out.println("Puntuacion de esta ultima partida: " + jugador.getPuntuacion());
             System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
+            int puntuacionActualizada = jugador.getPuntuacioTotal() + jugador.getPuntuacion();
+            System.out.println("Puntuacion Total: " + (jugador.getPuntuacioTotal() + jugador.getPuntuacion()));
+            jugador.setPuntuacionTotal(puntuacionActualizada);
             return;
         } else {
             System.out.println("Opción inválida. Saliendo del juego.");
@@ -205,7 +207,7 @@ public class AhorcadoPrincipal {
             System.out.println("te consideras buen jugador del ahorcado? SI[true] o NO[false]: ");
             boolean esBuenJugador = scanner.nextBoolean();
 
-            jugador = new TipoJugador(nombreJugador, edadJugador, 0, 0, esBuenJugador);
+            jugador = new TipoJugador(nombreJugador, edadJugador, 0, 0, esBuenJugador, 0);
             System.out.println("Gracias " + jugador.getNombre() + " por participar!");
 
 

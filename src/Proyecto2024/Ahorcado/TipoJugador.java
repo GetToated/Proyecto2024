@@ -3,8 +3,8 @@ package Proyecto2024.Ahorcado;
 public class TipoJugador extends Jugador {
     private boolean esBuenJugador;
 
-    public TipoJugador(String nombre, int edad, int intentosRealizados, int puntuacion, boolean esBuenJugador) {
-        super(nombre, edad, intentosRealizados, puntuacion);
+    public TipoJugador(String nombre, int edad, int intentosRealizados, int puntuacion, boolean esBuenJugador, int puntuacionTotal) {
+        super(nombre, edad, intentosRealizados, puntuacion, puntuacionTotal);
         this.esBuenJugador = esBuenJugador;
 
     }
