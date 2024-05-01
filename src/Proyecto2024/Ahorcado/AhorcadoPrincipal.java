@@ -24,8 +24,43 @@ public class AhorcadoPrincipal {
     public int getIntentos() {
         return intentos;
     }
-    public void setIntentos(int intentos) {
-        this.intentos = intentos;
+    public void comienzoDelJuego() {
+        try {
+            System.out.print("Introduza su nombre: ");
+            String nombreJugador = scanner.nextLine();
+            System.out.print("Introduza su edad: ");
+            int edadJugador = scanner.nextInt();
+            if (!validacionEdad(edadJugador)) {
+                System.out.println("Edad no validad, usted es demasiado pequeño :(");
+                return;
+            }
+            System.out.println("te consideras buen jugador del ahorcado? SI[true] o NO[false]: ");
+            boolean esBuenJugador = scanner.nextBoolean();
+
+            jugador = new TipoJugador(nombreJugador, edadJugador, 0, 0, esBuenJugador, 0);
+            System.out.println("Gracias " + jugador.getNombre() + " por participar!");
+
+
+            imprimirInstrucciones();
+            String modoASeleccionar = seleccionDeModoDeJuego();
+            if (modoASeleccionar.equalsIgnoreCase("1")) {
+                System.out.println("Has seleccionado el modo Clasico.");
+                juegoClasico((TipoJugador) jugador);
+            } else if (modoASeleccionar.equalsIgnoreCase("2")) {
+                System.out.println("Has seleccionado el modo Cronometrado");
+                juegoCrono((TipoJugador) jugador);
+            } else {
+                System.out.println("Opcion no valida.");
+            }
+
+        } catch (InputMismatchException exception) {
+            System.out.println("Error: Entrada No Valida");
+        } catch (Exception exception) {
+            System.out.println("error: " + exception.getMessage());
+        }
+    }
+    private boolean validacionEdad(int guardarEdad) {
+        return guardarEdad >= 6 && guardarEdad <= 120;
     }
     public void juegoClasico(TipoJugador jugador) {
         String palabraOculta = listaSegunJugador(jugador);
@@ -186,46 +221,6 @@ public class AhorcadoPrincipal {
     }
     public void deterTemporizador() {
         time.cancel();
-    }
-    public void comienzoDelJuego() {
-        try {
-            System.out.print("Introduza su nombre: ");
-            String nombreJugador = scanner.nextLine();
-            System.out.print("Introduza su edad: ");
-            int edadJugador = scanner.nextInt();
-            if (!validacionEdad(edadJugador)) {
-                System.out.println("Edad no validad, usted es demasiado pequeño :(");
-                return;
-            }
-            System.out.println("te consideras buen jugador del ahorcado? SI[true] o NO[false]: ");
-            boolean esBuenJugador = scanner.nextBoolean();
-
-            jugador = new TipoJugador(nombreJugador, edadJugador, 0, 0, esBuenJugador, 0);
-            System.out.println("Gracias " + jugador.getNombre() + " por participar!");
-
-
-            imprimirInstrucciones();
-            String modoASeleccionar = seleccionDeModoDeJuego();
-            if (modoASeleccionar.equalsIgnoreCase("1")) {
-                System.out.println("Has seleccionado el modo Clasico.");
-                juegoClasico((TipoJugador) jugador);
-            } else if (modoASeleccionar.equalsIgnoreCase("2")) {
-                System.out.println("Has seleccionado el modo Cronometrado");
-                juegoCrono((TipoJugador) jugador);
-            } else {
-                System.out.println("Opcion no valida.");
-            }
-
-        } catch (InputMismatchException exception) {
-            System.out.println("Error: Entrada No Valida");
-        } catch (Exception exception) {
-            System.out.println("error: " + exception.getMessage());
-        }
-    }
-
-
-    private boolean validacionEdad(int guardarEdad) {
-        return guardarEdad >= 6 && guardarEdad <= 120;
     }
     private void imprimirInstrucciones() {
         ModosDeJuego modosDeJuego = new ModosDeJuego("Clásico", "Cronometrado", 10);
