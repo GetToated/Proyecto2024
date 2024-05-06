@@ -34,7 +34,7 @@ public class AhorcadoPrincipal {
                 System.out.println("Edad no validad, usted es demasiado pequeño o la edad no es válida. :(");
                 return;
             }
-            System.out.println("te consideras buen jugador del ahorcado?(para ajustar la dificultad)  SI[true] o NO[false]: ");
+            System.out.println("Te consideras buen jugador del ahorcado?(para ajustar la dificultad)  SI[true] o NO[false]: ");
             boolean esBuenJugador = scanner.nextBoolean();
 
             jugador = new TipoJugador(nombreJugador, edadJugador, 0, 0, esBuenJugador, 0);
@@ -50,13 +50,13 @@ public class AhorcadoPrincipal {
                 System.out.println("Has seleccionado el modo Cronometrado");
                 juegoCrono((TipoJugador) jugador);
             } else {
-                System.out.println("Opcion no valida.");
+                System.out.println("Opción no valida.");
             }
 
         } catch (InputMismatchException exception) {
             System.out.println("Error: Entrada No Valida");
         } catch (Exception exception) {
-            System.out.println("error: " + exception.getMessage());
+            System.out.println("Error: " + exception.getMessage());
         }
     }
     private boolean validacionEdad(int guardarEdad) {

@@ -10,9 +10,9 @@ public class TipoJugador extends Jugador {
     }
     public String[] listas() {
         if (esBuenJugador) {
-            return new String[] {"esternocleidomastoideo", "articulacion", "asteroide", "flexionar", "campamento", "dinosaurio"};
+            return new String[] {"esternocleidomastoideo", "articulacion", "asteroide", "flexionar", "campamento", "dinosaurio", "mosasaurio"};
         } else {
-            return new String[] {"leon", "cafe", "hola", "casa", "luz", "alto"};
+            return new String[] {"java", "leon", "cafe", "hola", "casa", "luz", "alto"};
         }
     }
 }
