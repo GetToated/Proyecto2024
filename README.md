@@ -44,4 +44,4 @@
   <li>Metodos para el tiempo del modo cronometrado</li>
 </ul>
 
-<h3>Una posible implementacion seria permitir al jugador ingresar su nombre y edad, seleccionar el modo de juego, jugar tantas veces como desee y registrar sus logros. La aplicación mostrará las instrucciones correspondientes a cada modo de juego y permitirá al jugador adivinar la palabra oculta. Una vez que se completa la partida, se mostrará si el jugador ganó o perdió, junto con la palabra oculta, los logros obtenidos y la puntuacion</h3>
+<h3>Una implementacion seria permitir al jugador ingresar su nombre y edad, seleccionar el modo de juego, jugar tantas veces como desee y registrar sus logros. La aplicación mostrará las instrucciones correspondientes a cada modo de juego y permitirá al jugador adivinar la palabra oculta. Una vez que se completa la partida, se mostrará si el jugador ganó o perdió, junto con la palabra oculta, los logros obtenidos y la puntuacion</h3>
