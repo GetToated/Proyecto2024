@@ -15,3 +15,10 @@
    <li>Habrá una puntuacion que podras conseguir</li>
    <li>Habra Logros ocultos que puedes conseguir</li>
  </ul>
+<h2>Atributos necesarios:</h2>
+<ul>
+  <li>Numero de intentos disponibles</li>
+  <li>Tiempo límite para el modo cronometrado</li>
+  <li>Una palabra oculta que se tenga que adivinar</li>
+  <li>Lista de palabras</li>
+</ul>
