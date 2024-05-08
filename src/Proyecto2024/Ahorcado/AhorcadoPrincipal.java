@@ -28,9 +28,10 @@ public class AhorcadoPrincipal {
             char letra = pedirLetra();
             if (palabraEscondida.adivinaLetra(letra)) {
                 System.out.println("La letra " + letra  + " esta en la palabra");
-            } else
+            } else {
                 System.out.println("La letra " + letra + "  NO esta en la palabra");
                 intentosRestantes--;
+            }
         }
         if (palabraEscondida.letrasAdivinadas()) {
             System.out.println("Ganaste! " + palabraOculta + " era la palabra.");
@@ -116,11 +117,11 @@ public class AhorcadoPrincipal {
 
 
         } catch (InputMismatchException exception) {
-            System.out.println("Error: eqeq");
+            System.out.println("Error: " + exception.getMessage());
         } catch (NumberFormatException exception) {
-            System.out.println("e2qeqeq");
+            System.out.println("Error");
         } catch (Exception exception) {
-            System.out.println("eqrqr" + exception.getMessage());
+            System.out.println("Error: " + exception.getMessage());
         }
     }
     private String nombre() {
