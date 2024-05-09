@@ -1,6 +1,6 @@
 package Proyecto2024.Ahorcado;
 
-public class Jugador {
+public abstract class Jugador {
     private String nombre;
 
     private int intentosRealizados;
@@ -36,5 +36,5 @@ public class Jugador {
     public int getPuntuacion() {
         return puntuacion;
     }
-
+    public abstract String [] listas();
 }

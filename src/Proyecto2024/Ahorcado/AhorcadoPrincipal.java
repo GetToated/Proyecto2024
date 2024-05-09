@@ -210,7 +210,6 @@ public class AhorcadoPrincipal {
         if (opcion == 1) {
             juegoCrono((TipoJugador) jugador);
         } else if (opcion == 2) {
-            System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
             int puntuacionActualizada = jugador.getPuntuacioTotal() + jugador.getPuntuacion();
             System.out.println("Puntuacion Total: " + (jugador.getPuntuacioTotal() + jugador.getPuntuacion()));
             jugador.setPuntuacionTotal(puntuacionActualizada);
