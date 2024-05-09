@@ -25,7 +25,6 @@ public class PalabraEscondida {
                 letraEncontrada = true;
             }
         }
-
         return letraEncontrada;
     }
 

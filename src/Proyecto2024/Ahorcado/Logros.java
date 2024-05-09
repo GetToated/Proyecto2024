@@ -1,7 +1,7 @@
 package Proyecto2024.Ahorcado;
 
 public class Logros {
-    private String logroNombre;
+    private final String logroNombre;
     private boolean verificarLogro;
     private int progresoLogro;
 
