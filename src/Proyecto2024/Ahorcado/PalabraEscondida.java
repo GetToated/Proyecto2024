@@ -3,13 +3,13 @@ package Proyecto2024.Ahorcado;
 public class PalabraEscondida {
     private String palabra;
     private String mostrarPalabra;
-    private boolean verificarLetra;
 
-    public PalabraEscondida(String palabra, String mostrarPalabra, boolean verificarLetra) {
+
+    public PalabraEscondida(String palabra, String mostrarPalabra) {
 
         this.palabra = palabra;
         this.mostrarPalabra = "_".repeat(palabra.length());
-        this.verificarLetra = verificarLetra;
+
     }
     public String obtenerPalabraOculta() {
         return mostrarPalabra;
@@ -25,7 +25,7 @@ public class PalabraEscondida {
                 letraEncontrada = true;
             }
         }
-        verificarLetra = letraEncontrada;
+
         return letraEncontrada;
     }
 

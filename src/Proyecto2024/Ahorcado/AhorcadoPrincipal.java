@@ -66,7 +66,7 @@ public class AhorcadoPrincipal {
         String palabraOculta = listaSegunJugador(jugador);
         int intentosRestantes = getIntentos();
         intentosUsados = 0;
-        PalabraEscondida palabraEscondida = new PalabraEscondida(palabraOculta, "_".repeat(palabraOculta.length()), false);
+        PalabraEscondida palabraEscondida = new PalabraEscondida(palabraOculta, "_".repeat(palabraOculta.length()));
         while (intentosRestantes > 0 && !palabraEscondida.letrasAdivinadas()) {
             System.out.print("Intentos Restantes: " + intentosRestantes + "\n");
             System.out.print("Palabra: " + palabraEscondida.obtenerPalabraOculta() + "\n");
@@ -118,7 +118,7 @@ public class AhorcadoPrincipal {
         String palabraOculta = listaSegunJugador(jugador);
 
         iniciarTemporizador();
-        PalabraEscondida palabraEscondida = new PalabraEscondida(palabraOculta, "_".repeat(palabraOculta.length()), false);
+        PalabraEscondida palabraEscondida = new PalabraEscondida(palabraOculta, "_".repeat(palabraOculta.length()));
 
         Thread thread = new Thread(() -> {
             while (tiempoRestante > 0 && !palabraAdivinada) {
