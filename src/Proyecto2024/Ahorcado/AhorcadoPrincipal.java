@@ -2,13 +2,13 @@ package Proyecto2024.Ahorcado;
 import java.util.*;
 public class AhorcadoPrincipal {
     Scanner scanner = new Scanner(System.in);
-    private int intentos;
+    private final int intentos;
     private Timer time;
     private int tiempoRestante;
-    private int tiempoLimite;
+    private final int tiempoLimite;
     private int intentosUsados;
     private boolean palabraAdivinada;
-    private Puntuacion puntuacion;
+    private final Puntuacion puntuacion;
     private Jugador jugador;
 
     public AhorcadoPrincipal(int intentos, int tiempoLimite) {

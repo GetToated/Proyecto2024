@@ -1,7 +1,7 @@
 package Proyecto2024.Ahorcado;
 
 public abstract class Jugador {
-    private String nombre;
+    private final String nombre;
 
     private int intentosRealizados;
     private int puntuacion;
