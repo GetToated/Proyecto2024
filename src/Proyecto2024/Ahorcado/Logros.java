@@ -1,11 +1,11 @@
 package Proyecto2024.Ahorcado;
 
 public class Logros {
-    private String logroNombre;
+    private final String logroNombre;
     private boolean verificarLogro;
     private int progresoLogro;
 
-    public Logros( String logroNombre, boolean verificarLogro) {
+    public Logros(String logroNombre, boolean verificarLogro) {
 
         this.verificarLogro = verificarLogro;
         this.logroNombre = logroNombre;
@@ -19,14 +19,12 @@ public class Logros {
         return verificarLogro;
     }
 
+
     public void capProgreso(int cantidadPuntos) {
         progresoLogro += cantidadPuntos;
         if (progresoLogro >= 100) {
             verificarLogro = true;
         }
     }
-    public void reiniciarLogro() {
-        progresoLogro = 0;
-        verificarLogro = false;
-    }
+
 }
