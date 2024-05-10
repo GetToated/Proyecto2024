@@ -75,11 +75,7 @@ public class AhorcadoPrincipal {
             if (palabraEscondida.adivinaLetra(letra)) {
 
                 System.out.println("La letra " + letra  + " esta en la palabra");
-            } else {
-                System.out.println("La letra " + letra + "  NO esta en la palabra");
-                intentosRestantes--;
 
-                System.out.println("La letra " + letra + " está en la palabra");
             } else {
                 System.out.println("La letra " + letra + " NO está en la palabra");
                 intentosRestantes--;
@@ -229,46 +225,6 @@ public class AhorcadoPrincipal {
         time.cancel();
     }
 
-    public void comienzoDelJuego() {
-        try {
-            String nombreJugador = nombre();
-            int edadJugador = edad();
-            if (!validacionEdad(edadJugador)) {
-                System.out.println("Edad no validad, usted es demasiado pequeño :(");
-                return;
-            }
-            System.out.println("Gracias " + nombreJugador + " por participar!");
-            Logros logro1 = new Logros("Ganado por primera vez.", false);
-            Logros logro2 = new Logros("Cronometro antes de tiempo.", false);
-
-            imprimirInstrucciones();
-            String modoASeleccionar = seleccionDeModoDeJuego();
-            if (modoASeleccionar.equalsIgnoreCase("1")) {
-                System.out.println("Has seleccionado el modo Clasico.");
-                juegoClasico();
-            } else if (modoASeleccionar.equalsIgnoreCase("2")) {
-                System.out.println("Has seleccionado el modo Cronometrado");
-                juegoCrono();
-            } else
-                System.out.println("Opcion no valida, introduzca un numero dicho anteriormente.");
-
-
-        } catch (InputMismatchException exception) {
-            System.out.println("Error: " + exception.getMessage());
-        } catch (NumberFormatException exception) {
-            System.out.println("Error");
-        } catch (Exception exception) {
-            System.out.println("Error: " + exception.getMessage());
-        }
-    }
-    private String nombre() {
-        System.out.print("Introduzca tu nombre: ");
-        return scanner.nextLine();
-    }
-    private int edad() {
-        System.out.print("Introduzca tu edad: ");
-        return scanner.nextInt();
-    }
     private void imprimirInstrucciones() {
         ModosDeJuego modosDeJuego = new ModosDeJuego("Clásico", "Cronometrado", 10);
         System.out.println("Aquí estan las instrucciones del modo " + modosDeJuego.getModoClasico() + ":\n");
