@@ -32,6 +32,7 @@
   <li>Jugador: Gestionara la informacion del jugador</li>
   <li>Puntuacion: Proporcionara metodos para actualizar la puntuacion durante la partida</li>
   <li>TipoDeJugador: Extendera de Jugador. Dependiendo de si el jugador dice que se le da bien jugar o no, se le proporcionara una lista mas dificil o al la inversa</li>
+  <li>Interfaz: Crea una interfaz que sea de una alarma, cada vez que se acabe el tiempo en el modo cronometrado, suene</li>
 </ul>
 
 <h2>Métodos:</h2>
