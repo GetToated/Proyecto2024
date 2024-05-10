@@ -1,6 +1,7 @@
 package Proyecto2024.Ahorcado;
 import java.util.*;
 public class AhorcadoPrincipal {
+    private Interfaz alarma;
     Scanner scanner = new Scanner(System.in);
     private final int intentos;
     private Timer time;
@@ -16,6 +17,7 @@ public class AhorcadoPrincipal {
         this.tiempoLimite = tiempoLimite;
         this.puntuacion = new Puntuacion(0, 0);
         this.jugador = null;
+        this.alarma = new Alarma();
     }
 
 
@@ -136,6 +138,7 @@ public class AhorcadoPrincipal {
             deterTemporizador();
             if (!palabraEscondida.letrasAdivinadas() && !palabraAdivinada) {
                 System.out.println("\nSe acabó el tiempo, la palabra era " + palabraOculta);
+                alarma.sonar();
                 seguirJugandoCrono();
             }
         });
@@ -149,6 +152,7 @@ public class AhorcadoPrincipal {
             }
         }
         if (palabraEscondida.letrasAdivinadas()) {
+            alarma.sonar();
             palabraAdivinada = true;
             System.out.println("Ganaste!, la palabra es: " + palabraOculta);
             int puntosGanados = calcularPuntuacion(intentosUsados);
