@@ -1,5 +1,7 @@
 package Proyecto2024.Ahorcado;
+
 import java.util.*;
+
 public class AhorcadoPrincipal {
     private Interfaz alarma;
     Scanner scanner = new Scanner(System.in);
@@ -11,6 +13,7 @@ public class AhorcadoPrincipal {
     private boolean palabraAdivinada;
     private final Puntuacion puntuacion;
     private Jugador jugador;
+    private ModosDeJuego modosDeJuego;
 
     public AhorcadoPrincipal(int intentos, int tiempoLimite) {
         this.intentos = intentos;
@@ -18,18 +21,29 @@ public class AhorcadoPrincipal {
         this.puntuacion = new Puntuacion(0, 0);
         this.jugador = null;
         this.alarma = new Alarma();
+        this.modosDeJuego = new ModosDeJuego("Clásico", "Cronometrado", intentos);  // Inicialización de ModosDeJuego
     }
-
 
     Logros logro1 = new Logros("Modo de Juego Ganado.", false);
     Logros logroIntentos = new Logros("Hecho en la mitad de intentos", false);
+
     public int getIntentos() {
         return intentos;
     }
+
     public void comienzoDelJuego() {
+        String nombreJugador;
         try {
-            System.out.print("Introduza su nombre: ");
-            String nombreJugador = scanner.nextLine();
+            while (true) {
+                System.out.print("Introduzca su nombre: ");
+                nombreJugador = scanner.nextLine();
+                if (!nombreJugador.matches("[a-zA-Z]+")) {
+                    System.out.println("Error: Nombre no válido. Por favor, ingrese un nombre.");
+                    continue;
+                }
+                break;
+
+            }
             System.out.print("Introduza su edad: ");
             int edadJugador = scanner.nextInt();
             if (!validacionEdad(edadJugador)) {
@@ -42,8 +56,8 @@ public class AhorcadoPrincipal {
             jugador = new TipoJugador(nombreJugador, edadJugador, 0, 0, esBuenJugador, 0);
             System.out.println("Gracias " + jugador.getNombre() + " por participar!");
 
+            modosDeJuego.imprimirInstrucciones();
 
-            imprimirInstrucciones();
             String modoASeleccionar = seleccionDeModoDeJuego();
             if (modoASeleccionar.equalsIgnoreCase("1")) {
                 System.out.println("Has seleccionado el modo Clasico.");
@@ -57,13 +71,16 @@ public class AhorcadoPrincipal {
 
         } catch (InputMismatchException exception) {
             System.out.println("Error: Entrada No Valida");
+            scanner.next();
         } catch (Exception exception) {
             System.out.println("Error: " + exception.getMessage());
         }
     }
+
     private boolean validacionEdad(int guardarEdad) {
         return guardarEdad >= 6 && guardarEdad <= 120;
     }
+
     public void juegoClasico(TipoJugador jugador) {
         String palabraOculta = listaSegunJugador(jugador);
         int intentosRestantes = getIntentos();
@@ -75,14 +92,11 @@ public class AhorcadoPrincipal {
             char letra = pedirLetra();
 
             if (palabraEscondida.adivinaLetra(letra)) {
-
-                System.out.println("La letra " + letra  + " esta en la palabra");
-
+                System.out.println("La letra " + letra + " esta en la palabra");
             } else {
                 System.out.println("La letra " + letra + " NO está en la palabra");
                 intentosRestantes--;
                 intentosUsados++;
-
             }
         }
         if (palabraEscondida.letrasAdivinadas()) {
@@ -109,6 +123,7 @@ public class AhorcadoPrincipal {
         }
         seguirJugando();
     }
+
     private int calcularPuntuacion(int intentosUsados) {
         if (intentosUsados <= intentos / 4) {
             return 50;
@@ -135,7 +150,7 @@ public class AhorcadoPrincipal {
                 }
                 tiempoRestante--;
             }
-            deterTemporizador();
+            detenerTemporizador();
             if (!palabraEscondida.letrasAdivinadas() && !palabraAdivinada) {
                 System.out.println("\nSe acabó el tiempo, la palabra era " + palabraOculta);
                 alarma.sonar();
@@ -148,26 +163,73 @@ public class AhorcadoPrincipal {
             if (palabraEscondida.adivinaLetra(letra)) {
                 System.out.println("\nLa letra " + letra + " está en la palabra.");
             } else {
-                System.out.println("\nLa letra " + letra + " NO está en la palabra");
+                System.out.println("\nLa letra " + letra + " NO está en la palabra.");
             }
         }
         if (palabraEscondida.letrasAdivinadas()) {
-            alarma.sonar();
             palabraAdivinada = true;
-            System.out.println("Ganaste!, la palabra es: " + palabraOculta);
-            int puntosGanados = calcularPuntuacion(intentosUsados);
+            System.out.println("\n¡Ganaste! " + palabraOculta + " era la palabra.");
+            detenerTemporizador();
+            int puntosGanados = calcularPuntuacionCrono(tiempoRestante);
             puntuacion.actualizarPuntuacion(puntuacion.getMostrarPuntuacionFinal() + puntosGanados);
-            jugador.setPuntuacion(jugador.getPuntuacion() +puntosGanados);
-            System.out.println("Puntuacion final: " + jugador.getPuntuacion());
+            jugador.setPuntuacion(jugador.getPuntuacion() + puntosGanados);
+            System.out.println("Puntuacion Total: " + jugador.getPuntuacion());
             logro1.capProgreso(100);
             if (logro1.getVerificarLogro()) {
-                System.out.println("Felicidades has ganado el Logro: " + logro1.getLogroNombre());
+                System.out.println("Felicidades! desbloqueaste el logro: " + logro1.getLogroNombre());
             }
-            seguirJugandoCrono();
+        }
+        seguirJugandoCrono();
+    }
+
+    private void iniciarTemporizador() {
+        tiempoRestante = tiempoLimite;
+    }
+
+    private void detenerTemporizador() {
+        tiempoRestante = 0;
+    }
+
+    private int calcularPuntuacionCrono(int tiempoRestante) {
+        if (tiempoRestante > tiempoLimite / 2) {
+            return 50;
+        } else if (tiempoRestante > tiempoLimite / 4) {
+            return 30;
+        } else {
+            return 10;
+        }
+    }
+
+    public void seguirJugando() {
+        System.out.println("Desea seguir jugando? SI[true] o NO[false]: ");
+        boolean seguir = scanner.nextBoolean();
+        if (seguir) {
+            comienzoDelJuego();
+        } else {
+            System.out.println("Gracias por jugar!");
+        }
+    }
+
+    public void seguirJugandoCrono() {
+        System.out.println("Desea seguir jugando? SI[true] o NO[false]: ");
+        boolean seguir;
+        while (!scanner.hasNextBoolean()) {
+            System.out.println("Ingresa un valor booleano válido: ");
+            scanner.next();
+        }
+        seguir = scanner.nextBoolean();
+        if (seguir) {
+            comienzoDelJuego();
+        } else {
+            System.out.println("Gracias por jugar!");
         }
     }
 
 
+    private char pedirLetra() {
+        System.out.print("Introduce una letra: ");
+        return scanner.next().charAt(0);
+    }
 
     private String listaSegunJugador(TipoJugador jugador) {
         String[] lista = jugador.listas();
@@ -175,75 +237,14 @@ public class AhorcadoPrincipal {
         int indice = random.nextInt(lista.length);
         return lista[indice];
     }
-    public void iniciarTemporizador() {
-        tiempoRestante = tiempoLimite;
-        time = new Timer();
-        time.scheduleAtFixedRate(new TimerTask() {
-
-            public void run() {
-                tiempoRestante--;
-                if (tiempoRestante == 0) {
-                    time.cancel();
-                }
-            }
-        }, 1000, 1000);
-    }
-    public void seguirJugando() {
-        System.out.print("Quieres seguir jugando? SI[1] o NO[2]: ");
-        while (!scanner.hasNextInt()) {
-            System.out.println("Por favor, ingresa un número válido.");
-            scanner.next();
-        }
-        int opcion = scanner.nextInt();
-        if (opcion == 1) {
-            juegoClasico((TipoJugador) jugador);
-        } else if (opcion == 2) {
-            System.out.println("Intentos Realizados: " + jugador.getIntentosRealizados());
-            int puntuacionActualizada = jugador.getPuntuacioTotal() + jugador.getPuntuacion();
-            System.out.println("Puntuacion Total: " + puntuacionActualizada);
-            jugador.setPuntuacionTotal(puntuacionActualizada);
-            return;
-        } else {
-            System.out.println("Opción inválida. Saliendo del juego.");
-        }
-    }
-    public void seguirJugandoCrono() {
-        System.out.print("Quieres seguir jugando? SI[1] o NO[2]: ");
-        while (!scanner.hasNextInt()) {
-            System.out.println("Por favor, ingresa un número válido.");
-            scanner.next();
-        }
-        int opcion = scanner.nextInt();
-        if (opcion == 1) {
-            juegoCrono((TipoJugador) jugador);
-        } else if (opcion == 2) {
-            int puntuacionActualizada = jugador.getPuntuacioTotal() + jugador.getPuntuacion();
-            System.out.println("Puntuacion Total: " + (jugador.getPuntuacioTotal() + jugador.getPuntuacion()));
-            jugador.setPuntuacionTotal(puntuacionActualizada);
-            return;
-        } else {
-            System.out.println("Opción inválida. Saliendo del juego.");
-        }
-    }
-    public void deterTemporizador() {
-        time.cancel();
-    }
 
     private void imprimirInstrucciones() {
-        ModosDeJuego modosDeJuego = new ModosDeJuego("Clásico", "Cronometrado", 10);
-        System.out.println("Aquí estan las instrucciones del modo " + modosDeJuego.getModoClasico() + ":\n");
-        modosDeJuego.instuccionesClasico();
-        System.out.println("Aquí estan las instrucciones del modo " + modosDeJuego.getModoCrono() + ":\n");
-        modosDeJuego.instruccionesCrono();
-    }
-    private String seleccionDeModoDeJuego() {
-        System.out.print("Selecciona 1 para jugar al modo clasico o selecciona 2 para el modo Cronometrado: ");
-        return scanner.next();
-    }
-    private char pedirLetra() {
-        System.out.print("Introduce una letra: ");
-        return scanner.next().charAt(0);
+
     }
 
+    private String seleccionDeModoDeJuego() {
+        System.out.println("Selecciona el modo de juego:\n1. Clasico\n2. Cronometrado");
+        return scanner.next();
+    }
 
 }

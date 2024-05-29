@@ -26,5 +26,13 @@ public class ModosDeJuego {
     public void instruccionesCrono() {
         System.out.println("-Tendras 60 segundos para adivinar la palabra.\n-NO veras la longitud de la palabra, lo cual se dificulta.\n-Deberas escribir una letra, en el caso que no aciertes se insertará como fallada y no se podra repetir, si aciertas se colocará como acertada.\n-Pasarlo bien\n" );
     }
+    public void imprimirInstrucciones() {
+        System.out.println("\n--- Instrucciones ---\n");
+        System.out.println("Modo Clásico:");
+        instuccionesClasico();
+        System.out.println("Modo Cronometrado:");
+        instruccionesCrono();
+        System.out.println("--------------------\n");
+    }
 
 }
